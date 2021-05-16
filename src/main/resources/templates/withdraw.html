@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Customer | Withdraw</title>
+<script src="https://kit.fontawesome.com/3b01fd3ee0.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/css/styles.css}" />
+<link rel="stylesheet" th:href="@{/css/search_form.css}" />
+<link rel="stylesheet" th:href="@{/css/withdraw.css}" />
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap"
+	rel="stylesheet">
+</head>
+
+<body>
+	<div class="nav-bar">
+		<ul>
+			<li class="nav-item"><a href="#">Home | <i
+					class="fas fa-home"></i></a></li>
+			<li class="nav-item"><a th:href="@{/customer}">Customer | <i
+					class="fas fa-users"></i></a></li>
+			<li class="nav-item"><a href="#">Interes Rate | <i
+					class="fas fa-map"></i></a></li>
+			<li class="nav-item"><a href="#">Saving | <i
+					class="far fa-calendar-alt"></i></a></li>
+		</ul>
+	</div>
+	<div class="title">
+		<h2>Withdraw Infomation</h2>
+	</div>
+	<div class="container">
+		<div class="content">
+			<div class="col-2">
+				<h3 class="content-title">Personal information</h3>
+				<div class="info">
+					<h4>
+						Number account: <span th:text="${acc.numberAccount}"></span>
+					</h4>
+					<h4>
+						Fullname: <span th:text="${acc.customer.name}"></span>
+					</h4>
+					<h4>
+						Date of birth: <span th:text="${acc.customer.birthDay}"></span>
+					</h4>
+					<h4>
+						Phone: <span th:text="${acc.customer.phone}"></span>
+					</h4>
+					<h4>
+						Email: <span th:text="${acc.customer.email}"></span>
+					</h4>
+				</div>
+			</div>
+			<div class="col-2">
+				<h3 class="content-title">Booksaving Infomation</h3>
+				<div class="info">
+					<h4>
+						Description: <span th:text="${bs.description}"></span>
+					</h4>
+					<h4>
+						Deposit amount: <span th:text="${bs.amountSend}"></span>
+					</h4>
+					<h4>
+						Start date: <span th:text="${bs.startDate}"></span>
+					</h4>
+					<h4>
+						Withdraw date: <span th:text="${bs.withdrawDate}"></span>
+					</h4>
+					<h4>
+						Type: <span th:text="${bs.interes.type}"></span>
+					</h4>
+					<h4>
+						Quantity: <span th:text="${bs.interes.number}"></span>
+					</h4>
+					<h4>
+						Ratio: <span th:text="${bs.interes.ratio}"></span>
+					</h4>
+					<h4>
+						Total interes: <span th:text="${totalInteres}"></span>
+					</h4>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="key">
+			<a th:href="@{'/customer/detail/' + ${acc.id}}" class="button">Back | <i class="fas fa-arrow-left"></i></a>
+			<a th:href="@{'/booksaving/withdraw/' + ${bs.id}}">Confirm | <i class="fas fa-check-square"></i></a>			
+			<div class="clear"></div>
+		</div>
+	</div>
+</body>
+
+</html>

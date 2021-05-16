@@ -1,0 +1,89 @@
+.content-title {
+    font-size: 20px;
+    background-color: #77BA16;
+    padding: 4px 0px;
+    text-align: center;
+}
+
+.content .col-1 {
+    width: calc(25% - 16px);
+    float: left;
+    margin: 0 8px;
+    box-shadow: 0px 4px 10px 0px #ccc;
+}
+
+.content .col-3 {
+    width: calc(75% - 16px);
+    float: left;
+    margin: 0 8px;
+    box-shadow: 0px 4px 10px 0px #ccc;
+}
+
+.clear {
+    clear: both;
+}
+
+.content .info{
+    padding: 8px 24px;
+}
+
+.content h4 {
+    margin-bottom: 4px;
+}
+
+form {
+    padding: 16px 24px;
+}
+
+form .form-group, form .form-control {
+    display: block;
+    width: 100%;
+}
+
+form .form-group {
+    margin-bottom: 12px;
+}
+
+.pl-4 {
+    padding-left: 4px !important;
+}
+
+form .form-control {
+    padding: 4px 0;
+}
+
+.interes-group {
+    margin-bottom: 12px;
+}
+
+.interes-item {
+    margin-bottom: 4px;
+}
+
+.text-center {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.text-center button {
+    color: #000;
+    background-color: #C3DB47;
+    padding: 8px 16px;
+    font-weight: 600;
+    border-radius: 4px;
+    border: none;
+}
+
+.text-center button:hover {
+    opacity: 0.7;
+}
+
+.text-center a {
+    color: #000;
+    background-color: #C3DB47;
+    padding: 8px 16px;
+    font-weight: 600;
+    border-radius: 4px;
+    border: none;
+    text-decoration: none;
+}

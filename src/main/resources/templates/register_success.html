@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Customer | Management</title>
+<script src="https://kit.fontawesome.com/3b01fd3ee0.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/css/styles.css}" />
+<link rel="stylesheet" th:href="@{/css/register_success.css}" />
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap"
+	rel="stylesheet">
+</head>
+
+<body>
+	<div class="nav-bar">
+		<ul>
+			<li class="nav-item"><a href="#">Home | <i
+					class="fas fa-home"></i></a></li>
+			<li class="nav-item"><a th:href="@{/customer}">Customer | <i
+					class="fas fa-users"></i></a></li>
+			<li class="nav-item"><a href="#">Interes Rate | <i
+					class="fas fa-map"></i></a></li>
+			<li class="nav-item"><a href="#">Saving | <i
+					class="far fa-calendar-alt"></i></a></li>
+		</ul>
+	</div>
+	<div class="title">
+		<h2>Register Successfully!</h2>
+    </div>
+    <div class="key">
+        <a th:href="@{'/customer/detail/' + ${acc.id}}">Detail | <i class="fas fa-user-edit"></i></a>
+    </div>
+</body>
+
+</html>

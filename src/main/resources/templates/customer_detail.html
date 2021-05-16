@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Customer | Detail</title>
+<script src="https://kit.fontawesome.com/3b01fd3ee0.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/css/styles.css}" />
+<link rel="stylesheet" th:href="@{/css/customer_detail.css}" />
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap"
+	rel="stylesheet">
+</head>
+
+<body>
+	<div class="nav-bar">
+		<ul>
+			<li class="nav-item"><a href="#">Home | <i
+					class="fas fa-home"></i></a></li>
+			<li class="nav-item"><a th:href="@{/customer}">Customer | <i
+					class="fas fa-users"></i></a></li>
+			<li class="nav-item"><a href="#">Interes Rate | <i
+					class="fas fa-map"></i></a></li>
+			<li class="nav-item"><a href="#">Saving | <i
+					class="far fa-calendar-alt"></i></a></li>
+		</ul>
+	</div>
+	<div class="title">
+		<h2>Customer Detail</h2>
+	</div>
+	<div class="container">
+		<div class="content">
+			<div class="col-2">
+				<h3 class="content-title">Personal information</h3>
+				<div class="info">
+					<h4>
+						Fullname: <span th:text="${acc.customer.name}"></span>
+					</h4>
+					<h4>
+						Date of birth: <span th:text="${acc.customer.birthDay}"></span>
+					</h4>
+					<h4>
+						Phone: <span th:text="${acc.customer.phone}"></span>
+					</h4>
+					<h4>
+						Email: <span th:text="${acc.customer.email}"></span>
+					</h4>
+					<h4>
+						Permanent address: <span
+							th:text="${acc.customer.permanentAddress}"></span>
+					</h4>
+					<h4>
+						Hometown: <span th:text="${acc.customer.homeTown}"></span>
+					</h4>
+				</div>
+
+			</div>
+			<div class="col-2">
+				<h3 class="content-title">Bank account infomation</h3>
+				<div class="info">
+					<h4>
+						Number account: <span th:text="${acc.numberAccount}"></span>
+					</h4>
+					<h4>
+						Username: <span th:text="${acc.username}"></span>
+					</h4>
+					<h4>
+						Balance: <span th:text="${acc.balance}"></span>
+					</h4>
+				</div>
+			</div>
+			<div class="key">
+				<a href="#">Edit | <i class="fas fa-user-edit"></i></a>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="container">
+			<div class="content">
+				<div class="col-2-normal mt-2">
+					<h3>List BookSaving</h3>
+				</div>
+				<div class="col-2-normal">
+					<a th:href="@{'/booksaving/add/' + ${acc.id}}">To Saving</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<table>
+				<tr>
+					<th>Description</th>
+					<th>Deposit amount</th>
+					<th>Start date</th>
+					<th>Type</th>
+					<th>Quantity</th>
+					<th>Ratio</th>
+					<th>Action</th>
+				</tr>
+				<tr th:each="bs : ${listBs}">
+					<td th:text="${bs.description}"></td>
+					<td th:text="${bs.amountSend}"></td>
+					<td th:text="${bs.startDate}"></td>
+					<td th:text="${bs.interes.type}"></td>
+					<td th:text="${bs.interes.number}"></td>
+					<td th:text="${bs.interes.ratio}"></td>
+					<td><a th:href="@{'/booksaving/withdraw-info/' + ${bs.id}}">Withdraw</a></td>
+				</tr>
+			</table>
+	</div>
+	<div class="text-center">
+		<a th:href="@{/customer}">Back | <i class="fas fa-arrow-left"></i></a>
+	</div>
+</body>
+
+</html>

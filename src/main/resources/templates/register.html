@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer | Register</title>
+    <script src="https://kit.fontawesome.com/3b01fd3ee0.js"
+	crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap"
+	rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/register.css}" />
+</head>
+<body>
+    <div class="nav-bar">
+		<ul>
+			<li class="nav-item"><a href="#">Home | <i
+					class="fas fa-home"></i></a></li>
+			<li class="nav-item"><a th:href="@{/customer}">Customer | <i
+					class="fas fa-users"></i></a></li>
+			<li class="nav-item"><a href="#">Interes Rate | <i
+					class="fas fa-map"></i></a></li>
+			<li class="nav-item"><a href="#">Saving | <i
+					class="far fa-calendar-alt"></i></a></li>
+		</ul>
+	</div>
+	<div class="title">
+		<h2>Register Form</h2>
+	</div>
+    <div class="container-register">
+        <form th:action="@{/customer/register}" name="form-register" method="post" th:object="${account}">
+            <div class="form-group">
+                <label class="form-control" for="name">Fullname:</label>
+                <input class="form-control pl-4" id="name" type="text" name="name" th:field="*{customer.name}">
+            </div>
+            <div class="form-group">
+                <label class="form-control" for="username">Username: </label>
+                <input class="form-control pl-4" id="username" type="text" name="username" th:field="*{username}">
+            </div>
+            <div class="form-group">
+                <label class="form-control" for="password">Password: </label>
+                <input class="form-control pl-4" id="password" type="password" name="password" th:field="*{password}">
+            </div>
+            <div class="form-group">
+                <label class="form-control" for="confirm-password">Confirm password: </label>
+                <input class="form-control pl-4" id="confirm-password" type="password" name="confirm-password">
+            </div>
+            <div class="form-group">
+                <label class="form-control" for="birthday">Date of birth: </label>
+                <input class="form-control pl-4" id="birthday" type="text" name="birthday" placeholder="dd/mm/yyyy">
+<!--                th:field="*{customer.birthday}-->
+            </div>
+            <div class="form-group">
+                <label class="form-control" for="email">Email: </label>
+                <input class="form-control pl-4" id="email" type="email" name="email" th:field="*{customer.email}">
+            </div>
+            <div class="form-group">
+                <label class="form-control" for="phone">Phone: </label>
+                <input class="form-control pl-4" id="phone" type="number" name="phone" th:field="*{customer.phone}">
+            </div>
+            <div class="form-group">
+                <label class="form-control" for="permanent-address">Permanent address: </label>
+                <input class="form-control pl-4" id="permanent-address" type="text" name="permanent-address" th:field="*{customer.permanentAddress}">
+            </div>
+            <div class="form-group">
+                <label class="form-control" for="home-town">Hometown: </label>
+                <input class="form-control pl-4" id="home-town" type="text" name="home-town"  th:field="*{customer.homeTown}">
+            </div>
+            <div class="form-group">
+                <label class="form-control" for="number-account">Number account: </label>
+                <input class="form-control pl-4" id="number-account" type="text" name="number-account"  th:field="*{numberAccount}">
+            </div>
+            <div class="form-group">
+                <label class="form-control" for="balance">Balance: </label>
+                <input class="form-control pl-4" id="balance" type="text" name="balance">
+            </div>
+            <div class="text-center">
+                <a th:href="@{/customer}">Back | <i class="fas fa-arrow-left"></i></a>
+                <button onclick="return validateForm()">Register | <i class="fas fa-user-edit"></i></button>
+            </div>
+        </form>
+    </div>
+
+    <div id="footer">
+
+
+    </div>
+<script type="text/javascript">
+    function validateForm() {
+        var x = document.forms["form-register"]["birthday"].value;
+        if (x == "") {
+            alert("Name must be filled out");
+            return false;
+        }else return true;
+    }
+</script>
+</body>
+</html>
