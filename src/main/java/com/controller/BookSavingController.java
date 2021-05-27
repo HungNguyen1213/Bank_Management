@@ -2,7 +2,9 @@ package com.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -47,49 +49,47 @@ public class BookSavingController {
 	@Autowired
 	private AccountConverter ac;
 	
-	@Autowired AccountRepository accRepo;
+	@Autowired
+	private AccountRepository accRepo;
 	
+	public BookSavingController() {
+		super();
+	}
+
 	@GetMapping("/add/{idAccount}")
 	public String showAddForm(@PathVariable("idAccount") Long id, Model model) {
-		Iterable<InteresEntity> listE = iRepo.findAll();
-		List<InteresDto> listDto = new ArrayList<>();
-		for(InteresEntity ie : listE) {
-			listDto.add(ic.toDto(ie));
-		}
+		Map<String, Object> rs = handleShowAddForm(id, iRepo, accRepo, ic, ac);
 		Type[] types = InteresEntity.Type.values();
 		for(Type type : types) {
-			model.addAttribute(type.toString().toLowerCase(), filterByType(listDto, type));
+			model.addAttribute(type.toString().toLowerCase(), rs.get(type.toString().toLowerCase()));
 		}
 		model.addAttribute("bs", new BookSavingEntity());
-		Optional<AccountEntity> OptAcc = accRepo.findById(id);
-		if(OptAcc.isPresent()) {
-			AccountDto acc = ac.toDto(OptAcc.get());
-			model.addAttribute("acc", acc);
-		}
+		model.addAttribute("acc", rs.get("acc"));
 		return "to_saving";
 	}
 	
-	@PostMapping("/add/{idAccount}")
-	public String processAddBookSaving(@RequestParam("interes") String idInteres, @PathVariable("idAccount") String idAccount,
-			@RequestParam("description") String description, @RequestParam("amountSend") String amountSend) {
-		BookSavingEntity bse = new BookSavingEntity();
-		Optional<AccountEntity> OptAcc = accRepo.findById(Long.parseLong(idAccount));
+	public Map<String, Object> handleShowAddForm(Long id, InteresRepository repoI, AccountRepository repoAcc,
+			InteresConverter converterI, AccountConverter converterAcc) {
+		Map<String, Object> result = new HashMap<>();
+		Iterable<InteresEntity> listE = repoI.findAll();
+		List<InteresDto> listDto = new ArrayList<>();
+		for(InteresEntity ie : listE) {
+			listDto.add(converterI.toDto(ie));
+		}
+		Type[] types = InteresEntity.Type.values();
+		for(Type type : types) {
+			result.put(type.toString().toLowerCase(), filterByType(listDto, type));
+		}
+		Optional<AccountEntity> OptAcc = repoAcc.findById(id);
 		if(OptAcc.isPresent()) {
-			AccountEntity ae = OptAcc.get();
-			ae.setBalance(ae.getBalance() - Long.parseLong(amountSend));
-			bse.setAccount(ae);
+			AccountDto acc = converterAcc.toDto(OptAcc.get());			
+			result.put("acc", acc);
 		}
-		bse.setAmountSend(Long.parseLong(amountSend));
-		bse.setDescription(description);
-		Optional<InteresEntity> OptI = iRepo.findById(Long.parseLong(idInteres));
-		if(OptI.isPresent()) {
-			bse.setInteres(OptI.get());
-		}
-		bsRepo.save(bse);
-		return "redirect:/customer/detail/" + idAccount;
+		else result.put("acc", null);
+		return result;
 	}
-
-	private List<InteresDto> filterByType(List<InteresDto> listDto, Type type) {
+	
+	public List<InteresDto> filterByType(List<InteresDto> listDto, Type type) {
 		List<InteresDto> list  = new ArrayList<>();
 		for (InteresDto i : listDto) {
 			if(i.getType().equals(type.toString())) {
@@ -99,46 +99,96 @@ public class BookSavingController {
 		return list;
 	}
 	
-
+	@PostMapping("/add/{idAccount}")
+	public String processAddBookSaving(@RequestParam("interes") String idInteres, @PathVariable("idAccount") String idAccount,
+			@RequestParam("description") String description, @RequestParam("amountSend") String amountSend) {
+		handleAddBookSaving(idAccount, amountSend, idInteres, description, iRepo, accRepo, bsRepo);
+		return "redirect:/customer/detail/" + idAccount;
+	}
+	
+	public BookSavingEntity handleAddBookSaving(String idAccount, String amountSend, String idInteres, String description,
+			InteresRepository repoI, AccountRepository repoAcc, BookSavingRepository repoBs) {
+		BookSavingEntity bse = new BookSavingEntity();
+		Optional<AccountEntity> OptAcc = repoAcc.findById(Long.parseLong(idAccount));
+		if(OptAcc.isPresent()) {
+			AccountEntity ae = OptAcc.get();
+			ae.setBalance(ae.getBalance() - Long.parseLong(amountSend));
+			bse.setAccount(ae);
+			bse.setAmountSend(Long.parseLong(amountSend));
+			bse.setDescription(description);
+			Optional<InteresEntity> OptI = repoI.findById(Long.parseLong(idInteres));
+			if(OptI.isPresent()) {
+				bse.setInteres(OptI.get());
+			}
+			else {
+				return null;
+			}
+		}
+		else return null;
+		return repoBs.save(bse);
+	}
     
     @GetMapping("/withdraw-info/{idBs}")
     public String showWithdrawInfomation(@PathVariable("idBs") Long idBs, Model model){
-        Optional<BookSavingEntity> Opt = bsRepo.findById(idBs);
+        Map<String, Object> rs = handleShowWithdrawInfomation(idBs, bsRepo, bc, ac);
+        model.addAttribute("bs", rs.get("bs"));
+        model.addAttribute("acc", rs.get("acc"));
+        model.addAttribute("totalInteres", rs.get("totalInteres"));
+        return "withdraw";
+    }
+    
+    public Map<String, Object> handleShowWithdrawInfomation(Long idBs, BookSavingRepository repoBs,
+    		BookSavingConverter converterBs, AccountConverter converterAcc) {
+    	Map<String, Object> result = new HashMap<>();
+    	Optional<BookSavingEntity> Opt = repoBs.findById(idBs);
         if(Opt.isPresent()) {
         	BookSavingEntity bse = Opt.get();
         	Date date = new Date();
             bse.setWithdrawDate(date);
-            BookSavingDto bs = bc.toDto(bse);
-            model.addAttribute("bs", bs);
-            AccountDto acc = ac.toDto(bse.getAccount());
-            model.addAttribute("acc", acc);
-            double totalInteresD;
-            if(bse.getInteres().getType().toString().equals("NOLIMIT")) {
-            	Long diff = date.getTime() - bse.getStartDate().getTime();
-            	Long dayDiff = TimeUnit.MILLISECONDS.toDays(diff);
-            	totalInteresD = bse.getAmountSend() * bse.getInteres().getRatio() * dayDiff /360;
-            }
-            else {
-            	totalInteresD = bse.getAmountSend() * bse.getInteres().getRatio() * bse.getInteres().getNumber() / 12;
-            }
-            Long totalInteres = Math.round(totalInteresD);
-            model.addAttribute("totalInteres", totalInteres);
+            BookSavingDto bs = converterBs.toDto(bse);
+            result.put("bs", bs);            
+            AccountDto acc = converterAcc.toDto(bse.getAccount());
+            result.put("acc", acc);            
+            long totalInteres = calTotalInteres(bse, date);
+            result.put("totalInteres", totalInteres);
         }
-        return "withdraw";
+        else return null;
+        return result;
+    }
+    
+    public long calTotalInteres (BookSavingEntity bse, Date date) {
+    	double totalInteres;
+        if(bse.getInteres().getType().toString().equals("NOLIMIT")) {
+        	Long diff = date.getTime() - bse.getStartDate().getTime();
+        	Long dayDiff = TimeUnit.MILLISECONDS.toDays(diff);
+        	totalInteres = bse.getAmountSend() * bse.getInteres().getRatio() * dayDiff /365;
+        }
+        else if (bse.getInteres().getType().toString().equals("MONTH")){
+        	totalInteres = bse.getAmountSend() * bse.getInteres().getRatio() * bse.getInteres().getNumber() / 12;
+        }
+        else {
+        	totalInteres = bse.getAmountSend() * bse.getInteres().getRatio() * bse.getInteres().getNumber();
+        }
+        long result = Math.round(totalInteres);
+    	return result;
     }
     
     @GetMapping("/withdraw/{idBs}")
     public String updateWithdraw(@PathVariable("idBs") Long idBs){
-        Optional<BookSavingEntity> Opt = bsRepo.findById(idBs);
-        String accId = null;
+        String accId = handleUpdateWithdraw(idBs, bsRepo);
+        return "redirect:/customer/detail/" + accId;
+    }
+    
+    public String handleUpdateWithdraw(Long idBs, BookSavingRepository repoBs) {
+    	Optional<BookSavingEntity> Opt = repoBs.findById(idBs);
+    	String accId = null;
         if(Opt.isPresent()) {
         	BookSavingEntity bse = Opt.get();
         	Date date = new Date();
             bse.setWithdrawDate(date);
-            bsRepo.save(bse);
+            repoBs.save(bse);
             accId = bse.getAccount().getId().toString();
-            
         }
-        return "redirect:/customer/detail/" + accId;
+        return accId;
     }
 }

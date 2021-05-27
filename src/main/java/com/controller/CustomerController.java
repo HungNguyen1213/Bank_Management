@@ -4,7 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +34,24 @@ import com.repository.CustomerRepository;
 @RequestMapping("/customer")
 public class CustomerController {
 	@Autowired
-	private AccountRepository accRepo;
+	public AccountRepository accRepo;
 	
 	@Autowired
-	private AccountConverter ac;
+    public CustomerRepository cusRepo;
+	
+	public AccountConverter ac;
 	
 	@Autowired
-	private BookSavingRepository bsRepo;
+	public BookSavingRepository bsRepo;
 	
 	@Autowired
-	private BookSavingConverter bsc;
+	public BookSavingConverter bsc;
 	
+	public CustomerController() {
+		super();
+		ac = new AccountConverter();
+	}
+
 	@GetMapping
 	public String showCustomer(Model model) {
 		model.addAttribute("isSuccess", true);
@@ -51,65 +60,89 @@ public class CustomerController {
 	
 	@GetMapping("/search")
 	public String searchCustomer(@RequestParam("searchKey") String searchKey, Model model) {
-		AccountEntity ae = accRepo.findByNumberAccount(searchKey);
+		Map<String, Object> rs = handleSearchCustomer(searchKey, accRepo, ac);
+		model.addAttribute("acc", rs.get("acc"));
+		model.addAttribute("isSuccess", rs.get("isSuccess"));
+		return "customer";
+	}
+	
+	public Map<String, Object> handleSearchCustomer(String searchKey, AccountRepository repo, AccountConverter converter) {
+		AccountEntity ae = repo.findByNumberAccount(searchKey);
+		Map<String, Object> result = new HashMap<>();
 		if(ae != null) {
-			AccountDto acc = ac.toDto(ae);
-			model.addAttribute("acc", acc);
-			model.addAttribute("isSuccess", true);
+			AccountDto acc = converter.toDto(ae);
+			result.put("acc", acc);
+			result.put("isSuccess", true);
+			
 		}
 		else {
-			model.addAttribute("isSuccess", false);
+			result.put("acc", null);
+			result.put("isSuccess", false);
 		}
-		return "customer";
+		return result;
 	}
 	
 	@GetMapping("/detail/{id}")
 	public String showDetail(@PathVariable("id") Long id, Model model) {
-		Optional<AccountEntity> OptAe = accRepo.findById(id);
-		if(OptAe.isPresent()) {
-			AccountDto acc = ac.toDto(OptAe.get());
-			model.addAttribute("acc", acc);
-		}
-		List<BookSavingEntity> listE = bsRepo.findByAccountId(id);
-		if(listE.isEmpty()) {
-			model.addAttribute("listBs", null);
-		}
-		else {
-			List<BookSavingDto> listBs = new ArrayList<>();
-			for(BookSavingEntity bse : listE) {
-				listBs.add(bsc.toDto(bse));
-			}
-			model.addAttribute("listBs", listBs);
-		}
+		Map<String, Object> rs = handleShowCustomerDetail(id, accRepo, ac, bsRepo, bsc);
+		model.addAttribute("acc", rs.get("acc"));
+		model.addAttribute("listBs", rs.get("listBs"));
 		return "customer_detail";
 	}
 
-    @Autowired
-    private CustomerRepository cusRepo;
+    public Map<String, Object> handleShowCustomerDetail(Long id, AccountRepository repoAcc,
+    		AccountConverter accConverter, BookSavingRepository repoBs, BookSavingConverter bsConverter) {
+    	Map<String, Object> result = null;
+    	Optional<AccountEntity> OptAe = repoAcc.findById(id);
+		if(OptAe.isPresent()) {
+			result = new HashMap<>();
+			AccountDto acc = accConverter.toDto(OptAe.get());
+			result.put("acc", acc);		
+			List<BookSavingEntity> listE = repoBs.findByAccountId(id);
+			if(listE.isEmpty()) {
+				result.put("listBs", null);
+			}
+			else {
+				List<BookSavingDto> listBs = new ArrayList<>();
+				for(BookSavingEntity bse : listE) {
+					listBs.add(bsConverter.toDto(bse));
+				}
+				
+				result.put("listBs", listBs);
+			}
+		}
+		return result;
+    }
 
     @GetMapping("/register")
     public String getAccount(Model model){
         AccountDto account = new AccountDto();
-        int code = (int) Math.floor(((Math.random() * 899999) + 100000));
+        int code = randomCode();
         account.setNumberAccount(String.valueOf(code));
         model.addAttribute("account", account);
         return "register";
+    }
+    
+    private int randomCode() {
+    	return (int) Math.floor(((Math.random() * 899999) + 100000));
     }
 
     @PostMapping("/register")
     public String createAccount(Model model, @ModelAttribute("account") AccountEntity account, @RequestParam("balance") String balance,
     		@RequestParam("birthday") String birthday, @RequestParam("confirm-password") String confirmPassword) throws ParseException {
-        AccountEntity accountPost = (AccountEntity) model.getAttribute("account");
+    	AccountEntity accountPost = (AccountEntity) model.getAttribute("account");
+        model.addAttribute("acc", handleCreateAccount(birthday, balance, accountPost, cusRepo, accRepo));
+        return "register_success";
+    }
+    
+    public AccountEntity handleCreateAccount(String birthday, String balance, AccountEntity accountPost,
+    		CustomerRepository repoCus, AccountRepository repoAcc) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date birthdayFormat = sdf.parse(birthday);
-//        customer.setBirthday(birthdayFormat);
         accountPost.getCustomer().setBirthday(birthdayFormat);
-        CustomerEntity customer = cusRepo.save(accountPost.getCustomer());
-//        System.out.println(accountPost.getNumberAccount());
+        CustomerEntity customer = repoCus.save(accountPost.getCustomer());
         accountPost.setCustomer(customer);
         accountPost.setBalance(Long.parseLong(balance));
-        accRepo.save(accountPost);
-        model.addAttribute("acc", accountPost);
-        return "register_success";
+        return repoAcc.save(accountPost);
     }
 }

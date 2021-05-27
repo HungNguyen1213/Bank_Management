@@ -1,16 +1,12 @@
 package com.converter;
 
 import java.text.SimpleDateFormat;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.dto.BookSavingDto;
 import com.entity.BookSavingEntity;
 
 @Component
 public class BookSavingConverter {
-	@Autowired
 	private InteresConverter ic;
 	public BookSavingDto toDto(BookSavingEntity bse) {
 		BookSavingDto b = new BookSavingDto();
@@ -24,5 +20,9 @@ public class BookSavingConverter {
 			b.setWithdrawDate(formatter.format(bse.getWithdrawDate()));
 		}
 		return b;
+	}
+	public BookSavingConverter() {
+		super();
+		ic = new InteresConverter();
 	}
 }

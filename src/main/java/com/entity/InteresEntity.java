@@ -22,7 +22,7 @@ public class InteresEntity extends BaseEntity{
 	private Type type;
 	
 	public static enum Type {
-		NOLIMIT, MONTH, YEAR
+		MONTH, YEAR, NOLIMIT
 	}
 	
 	@OneToMany(mappedBy = "interes")
