@@ -34,48 +34,52 @@
         <form th:action="@{/customer/register}" name="form-register" method="post" th:object="${account}">
             <div class="form-group">
                 <label class="form-control" for="name">Fullname:</label>
-                <input class="form-control pl-4" id="name" type="text" name="name" th:field="*{customer.name}">
+                <input class="form-control pl-4" id="name" type="text" name="name" th:field="*{customer.name}" required>
             </div>
             <div class="form-group">
                 <label class="form-control" for="username">Username: </label>
-                <input class="form-control pl-4" id="username" type="text" name="username" th:field="*{username}">
+                <input class="form-control pl-4" id="username" type="text" name="username" th:field="*{username}" required>
             </div>
             <div class="form-group">
                 <label class="form-control" for="password">Password: </label>
-                <input class="form-control pl-4" id="password" type="password" name="password" th:field="*{password}">
+                <input class="form-control pl-4" id="password" type="password" name="password" th:field="*{password}" required>
             </div>
             <div class="form-group">
                 <label class="form-control" for="confirm-password">Confirm password: </label>
-                <input class="form-control pl-4" id="confirm-password" type="password" name="confirm-password">
+                <input class="form-control pl-4" id="confirm-password" type="password" name="confirm-password" required>
             </div>
             <div class="form-group">
                 <label class="form-control" for="birthday">Date of birth: </label>
-                <input class="form-control pl-4" id="birthday" type="text" name="birthday" placeholder="dd/mm/yyyy">
+                <input class="form-control pl-4" id="birthday" type="text" name="birthday" placeholder="dd/mm/yyyy" required>
 <!--                th:field="*{customer.birthday}-->
             </div>
             <div class="form-group">
+                <label class="form-control" for="idNumber">Citizen identification number: </label>
+                <input class="form-control pl-4" id="idNumber" type="number" name="idNumber" th:field="*{customer.idNumber}" required>
+            </div>
+            <div class="form-group">
                 <label class="form-control" for="email">Email: </label>
-                <input class="form-control pl-4" id="email" type="email" name="email" th:field="*{customer.email}">
+                <input class="form-control pl-4" id="email" type="email" name="email" th:field="*{customer.email}" required>
             </div>
             <div class="form-group">
                 <label class="form-control" for="phone">Phone: </label>
-                <input class="form-control pl-4" id="phone" type="number" name="phone" th:field="*{customer.phone}">
+                <input class="form-control pl-4" id="phone" type="number" name="phone" th:field="*{customer.phone}" required>
             </div>
             <div class="form-group">
                 <label class="form-control" for="permanent-address">Permanent address: </label>
-                <input class="form-control pl-4" id="permanent-address" type="text" name="permanent-address" th:field="*{customer.permanentAddress}">
+                <input class="form-control pl-4" id="permanent-address" type="text" name="permanent-address" th:field="*{customer.permanentAddress}" required>
             </div>
             <div class="form-group">
                 <label class="form-control" for="home-town">Hometown: </label>
-                <input class="form-control pl-4" id="home-town" type="text" name="home-town"  th:field="*{customer.homeTown}">
+                <input class="form-control pl-4" id="home-town" type="text" name="home-town"  th:field="*{customer.homeTown}" required>
             </div>
             <div class="form-group">
                 <label class="form-control" for="number-account">Number account: </label>
-                <input class="form-control pl-4" id="number-account" type="text" name="number-account"  th:field="*{numberAccount}">
+                <input class="form-control pl-4" id="number-account" type="text" name="number-account"  th:field="*{numberAccount}" required>
             </div>
             <div class="form-group">
                 <label class="form-control" for="balance">Balance: </label>
-                <input class="form-control pl-4" id="balance" type="text" name="balance">
+                <input class="form-control pl-4" id="balance" type="text" name="balance" required>
             </div>
             <div class="text-center">
                 <a th:href="@{/customer}">Back | <i class="fas fa-arrow-left"></i></a>
@@ -90,9 +94,10 @@
     </div>
 <script type="text/javascript">
     function validateForm() {
-        var x = document.forms["form-register"]["birthday"].value;
-        if (x == "") {
-            alert("Name must be filled out");
+        var x = document.forms["form-register"]["password"].value;
+        var y = document.forms["form-register"]["confirm-password"].value;
+        if (x !== y) {
+            alert("password and confirm password are not matching");
             return false;
         }else return true;
     }

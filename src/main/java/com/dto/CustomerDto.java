@@ -4,6 +4,7 @@ public class CustomerDto {
 	private Long id;
 	private String name;
 	private String birthDay;
+	private String idNumber;
 	private String phone;
 	private String email;
 	private String permanentAddress;
@@ -30,6 +31,15 @@ public class CustomerDto {
 	public void setBirthDay(String birthDay) {
 		this.birthDay = birthDay;
 	}
+
+	public String getIdNumber() {
+		return idNumber;
+	}
+
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
+	}
+
 	public String getPhone() {
 		return phone;
 	}

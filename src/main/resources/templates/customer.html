@@ -48,6 +48,7 @@
 				<tr>
 					<th>Number account</th>
 					<th>Name</th>
+					<th>Citizen identification number</th>
 					<th>Phone</th>
 					<th>Balance</th>
 					<th>Action</th>
@@ -55,6 +56,7 @@
 				<tr th:if="${acc != null}">
 					<td th:text="${acc.numberAccount}"></td>
 					<td th:text="${acc.customer.name}"></td>
+					<td th:text="${acc.customer.idNumber}"></td>
 					<td th:text="${acc.customer.phone}"></td>
 					<td th:text="${acc.balance}"></td>
 					<td class="pd-6"><a th:href="@{'/customer/detail/' + ${acc.id}}">Detail</a></td>

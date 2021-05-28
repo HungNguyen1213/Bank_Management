@@ -13,6 +13,7 @@ public class CustomerConverter {
 		CustomerDto c = new CustomerDto();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		c.setBirthDay(formatter.format(ce.getBirthday()));
+		c.setIdNumber(ce.getIdNumber());
 		c.setEmail(ce.getEmail());
 		c.setHomeTown(ce.getHomeTown());
 		c.setId(ce.getId());

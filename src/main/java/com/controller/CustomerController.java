@@ -129,7 +129,7 @@ public class CustomerController {
 
     @PostMapping("/register")
     public String createAccount(Model model, @ModelAttribute("account") AccountEntity account, @RequestParam("balance") String balance,
-    		@RequestParam("birthday") String birthday, @RequestParam("confirm-password") String confirmPassword) throws ParseException {
+    		@RequestParam("birthday") String birthday) throws ParseException {
     	AccountEntity accountPost = (AccountEntity) model.getAttribute("account");
         model.addAttribute("acc", handleCreateAccount(birthday, balance, accountPost, cusRepo, accRepo));
         return "register_success";

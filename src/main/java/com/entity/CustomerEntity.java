@@ -16,7 +16,10 @@ public class CustomerEntity extends BaseEntity{
 	
 	@Column
 	private Date birthday;
-	
+
+	@Column
+	private String idNumber;
+
 	@Column
 	private String phone;
 	
@@ -58,6 +61,14 @@ public class CustomerEntity extends BaseEntity{
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+
+	public String getIdNumber() {
+		return idNumber;
+	}
+
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
 	}
 
 	public String getPhone() {
