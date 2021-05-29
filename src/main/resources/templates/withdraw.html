@@ -90,10 +90,15 @@
 		</div>
 		<div class="key">
 			<a th:href="@{'/customer/detail/' + ${acc.id}}" class="button">Back | <i class="fas fa-arrow-left"></i></a>
-			<a th:href="@{'/booksaving/withdraw/' + ${bs.id}}">Confirm | <i class="fas fa-check-square"></i></a>			
+			<a th:href="@{'/booksaving/withdraw/' + ${bs.id}}" onclick="validateForm()"  >Confirm | <i class="fas fa-check-square"></i></a>
 			<div class="clear"></div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		function validateForm() {
+			alert("Successfully withdrawn savings book!");
+		}
+	</script>
 </body>
 
 </html>
