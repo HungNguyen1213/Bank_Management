@@ -13,7 +13,7 @@ import com.entity.InteresEntity;
 import com.entity.InteresEntity.Type;
 
 public class TestCalTotalInteres {
-	private BookSavingController controller = new BookSavingController();
+	private final BookSavingController controller = new BookSavingController();
 	
 	@Test
 	public void test21() throws ParseException {
@@ -29,7 +29,7 @@ public class TestCalTotalInteres {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		bse.setStartDate(formatter.parse(startDate));
 		long rs = controller.calTotalInteres(bse, formatter.parse(endDate));
-		assertEquals((long)19178, rs);
+		assertEquals(19178, rs);
 	}
 	
 	@Test
@@ -44,7 +44,7 @@ public class TestCalTotalInteres {
 		String endDate = "25/05/2021";
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		long rs = controller.calTotalInteres(bse, formatter.parse(endDate));
-		assertEquals((long)150000, rs);
+		assertEquals(150000, rs);
 	}
 	
 	@Test
@@ -59,6 +59,6 @@ public class TestCalTotalInteres {
 		String endDate = "25/05/2021";
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		long rs = controller.calTotalInteres(bse, formatter.parse(endDate));
-		assertEquals((long)1299999, rs);
+		assertEquals(1299999, rs);
 	}
 }
