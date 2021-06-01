@@ -1,0 +1,105 @@
+.content-title {
+    font-size: 20px;
+    background-color: #77BA16;
+    padding: 4px 0px;
+    text-align: center;
+}
+
+.content .col-2 {
+    width: calc(50% - 16px);
+    float: left;
+    margin: 0 8px;
+    box-shadow: 0px 4px 10px 0px #ccc;
+}
+
+.content .col-2-normal {
+    width: calc(50% - 16px);
+    float: left;
+    margin: 0 8px;
+}
+
+.clear {
+    clear: both;
+}
+
+.mt-2 {
+    margin-top: 2px !important;
+}
+
+.content .info{
+    padding: 8px 24px;
+}
+
+.content h4 {
+    margin-bottom: 4px;
+}
+
+.key {
+    width: calc(50% - 16px);
+    float: left;
+    margin: 16px 8px;
+}
+
+.key a, .col-2-normal a{
+    text-decoration: none;
+    color: #000;
+    float: right;
+    background-color: #C3DB47;
+    padding: 8px 16px;
+    font-weight: 600;
+    border-radius: 4px;
+}
+
+.container a:hover{
+    opacity: 0.7;
+}
+
+.col-2-normal h3 {
+    font-size: 20px;
+    padding: 4px 0px;
+}
+
+table {
+    width: 100%;
+    padding: 0 6px;
+    margin: 12px 0;
+}
+
+table th {
+    background-color: #77BA16;
+    padding: 4px;
+}
+
+table td {
+    padding: 8px 8px;
+    text-align: center;
+}
+
+table a {
+    text-decoration: none;
+    color: #000;
+    display: block;
+    background-color: #C3DB47;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 2px;
+}
+
+table a:hover {
+    opacity: 0.7;
+}
+
+.text-center a {
+    color: #000;
+    background-color: #C3DB47;
+    padding: 8px 16px;
+    font-weight: 600;
+    border-radius: 4px;
+    border: none;
+    text-decoration: none;
+}
+
+.text-center {
+    text-align: center;
+    display: block;
+}
