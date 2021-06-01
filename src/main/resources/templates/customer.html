@@ -37,7 +37,7 @@
 			<form method="get" th:action="@{/customer/search}">
 				<input type="text" name="searchKey" class="form-control"
 					placeholder="Type the number account" />
-				<button type="submit">Search | <i class="fas fa-search"></i></button>
+				<button id="btn-searchKey" type="submit">Search | <i class="fas fa-search"></i></button>
 				<span style="padding: 0 4px;">Or</span>
 				<a th:href="@{/customer/register}">Register | <i class="fas fa-user-edit"></i></a>
 			</form>
